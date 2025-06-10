@@ -53,7 +53,17 @@ async def on_voice_state_update(member, before, after):
                 voice_client = member.guild.voice_client
 
             # Utilisation de FFmpeg avec chemin explicite pour Railway
-            voice_client.play(discord.FFmpegPCMAudio(audio_file, executable="ffmpeg"))
+            # Teste plusieurs chemins pour ffmpeg
+            ffmpeg_paths = ["/usr/bin/ffmpeg", "/usr/local/bin/ffmpeg", "ffmpeg"]
+            for ffmpeg_path in ffmpeg_paths:
+                try:
+                    voice_client.play(discord.FFmpegPCMAudio(audio_file, executable=ffmpeg_path))
+                    print(f"Using ffmpeg at: {ffmpeg_path}")
+                    break
+                except Exception as e:
+                    print(f"Failed with {ffmpeg_path}: {e}")
+            else:
+                print("Aucun exécutable ffmpeg trouvé. Le son ne fonctionnera pas.")
 
             while voice_client.is_playing():
                 await asyncio.sleep(1)
