@@ -1,0 +1,7 @@
+# Fichiers Python
+*.pyc
+__pycache__/
+# Fichiers de configuration sensibles
+.env
+# Fichiers système
+*.ini
