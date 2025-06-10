@@ -52,7 +52,8 @@ async def on_voice_state_update(member, before, after):
             else:
                 voice_client = member.guild.voice_client
 
-            voice_client.play(discord.FFmpegPCMAudio(audio_file))
+            # Utilisation de FFmpeg avec chemin explicite pour Railway
+            voice_client.play(discord.FFmpegPCMAudio(audio_file, executable="ffmpeg"))
 
             while voice_client.is_playing():
                 await asyncio.sleep(1)
