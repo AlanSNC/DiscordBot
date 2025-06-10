@@ -1,2 +1,8 @@
+[languages]
+python = true
+
+[variables]
+PYTHON_VERSION = "3.12"
+
 [phases.setup]
 nixPkgs = ["ffmpeg"]
