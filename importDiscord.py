@@ -1,7 +1,3 @@
-# Dépendances nécessaires : discord.py et python-dotenv
-# Installe-les avec :
-# python -m pip install -U discord.py python-dotenv
-
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -52,18 +48,11 @@ async def on_voice_state_update(member, before, after):
             else:
                 voice_client = member.guild.voice_client
 
-            # Utilisation de FFmpeg avec chemin explicite pour Railway
-            # Teste plusieurs chemins pour ffmpeg
-            ffmpeg_paths = ["/usr/bin/ffmpeg", "/usr/local/bin/ffmpeg", "ffmpeg"]
-            for ffmpeg_path in ffmpeg_paths:
-                try:
-                    voice_client.play(discord.FFmpegPCMAudio(audio_file, executable=ffmpeg_path))
-                    print(f"Using ffmpeg at: {ffmpeg_path}")
-                    break
-                except Exception as e:
-                    print(f"Failed with {ffmpeg_path}: {e}")
-            else:
-                print("Aucun exécutable ffmpeg trouvé. Le son ne fonctionnera pas.")
+            try:
+                voice_client.play(discord.FFmpegPCMAudio(audio_file, executable="ffmpeg"))
+                print("Lecture audio avec ffmpeg.")
+            except Exception as e:
+                print(f"Erreur lors de la lecture audio : {e}")
 
             while voice_client.is_playing():
                 await asyncio.sleep(1)
@@ -103,5 +92,5 @@ async def join(ctx):
     else:
         await ctx.send("You are not connected to a voice channel.")
 
-load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
+load_dotenv()
 bot.run(os.getenv('DISCORD_TOKEN'))
